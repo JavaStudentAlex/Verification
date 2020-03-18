@@ -27,7 +27,7 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal title");
         cartInstance.addItem(faker.lorem().characters(35), 1.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -35,13 +35,13 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal title");
         cartInstance.addItem(faker.lorem().characters(0), 1.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
     public void addItemTitleValidEquivalentClass(){
         cartInstance.addItem(faker.lorem().characters(2), 1.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal price");
         cartInstance.addItem(faker.lorem().characters(15), -1.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -57,13 +57,13 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal price");
         cartInstance.addItem(faker.lorem().characters(15), 1001.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
     public void addItemPriceValidEquivalentClass(){
         cartInstance.addItem(faker.lorem().characters(15), 2.0, 1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal quantity");
         cartInstance.addItem(faker.lorem().characters(15), 1.0, -1,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -79,13 +79,13 @@ public class AddItemTestcase {
         thrown.expect(IllegalArgumentException.class);
         thrown.expectMessage("Illegal quantity");
         cartInstance.addItem(faker.lorem().characters(15), 1.0, 1002,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
     public void addItemQuantityValidEquivalentClass(){
         cartInstance.addItem(faker.lorem().characters(15), 1.0, 505,
-                ShoppingCart.ITEM_REGULAR);
+                Item.ITEM_REGULAR);
     }
 
     @Test
@@ -93,7 +93,7 @@ public class AddItemTestcase {
         int size = 54;
         for(int i=0;i<size; ++i){
             cartInstance.addItem(faker.lorem().characters(15), 1.0,
-                    550, ShoppingCart.ITEM_REGULAR);
+                    550, Item.ITEM_REGULAR);
         }
     }
 
@@ -104,7 +104,7 @@ public class AddItemTestcase {
         int size = 100;
         for(int i=0;i<size; ++i){
             cartInstance.addItem(faker.lorem().characters(15), 1.0,
-                    550, ShoppingCart.ITEM_REGULAR);
+                    550, Item.ITEM_REGULAR);
         }
     }
 
@@ -119,7 +119,7 @@ public class AddItemTestcase {
     @Test
     public void addItemTypeValidEquivalentClass(){
         cartInstance.addItem(faker.lorem().characters(15), 1.0, 300,
-                ShoppingCart.ITEM_FOR_SALE);
+                Item.ITEM_FOR_SALE);
     }
 
 }

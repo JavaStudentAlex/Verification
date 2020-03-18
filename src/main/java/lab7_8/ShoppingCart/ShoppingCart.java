@@ -7,39 +7,11 @@ import java.text.*;
  * Containing items and calculating price.
  */
 public class ShoppingCart {
-    public static final int ITEM_REGULAR = 0;
-    public static final int ITEM_DISCOUNT = 1;
-    public static final int ITEM_SECOND_FREE = 2;
-    public static final int ITEM_FOR_SALE = 3;
-
-    /**
-     * item info
-     */
-    private static class Item {
-        String title;
-        double price;
-        int quantity;
-        int type;
-    }
 
     /**
      * Container for added items
      */
     private List items = new ArrayList();
-
-    /**
-     * Tests all class methods.
-     */
-    public static void main(String[] args) {
-// TODO: add tests here
-        ShoppingCart cart = new ShoppingCart();
-        cart.addItem("Apple", 0.99, 5, ITEM_REGULAR);
-        cart.addItem("Banana", 20.00, 4, ITEM_SECOND_FREE);
-        cart.addItem("A long piece of toilet paper", 17.20, 1,
-                ITEM_FOR_SALE);
-        cart.addItem("Nails", 2.00, 500, ITEM_REGULAR);
-        System.out.println(cart.toString());
-    }
 
     /**
      * Adds new item.
@@ -61,90 +33,8 @@ public class ShoppingCart {
             throw new IllegalArgumentException("Illegal quantity");
         if (items.size() == 99)
             throw new IndexOutOfBoundsException("No more space in cart");
-        Item item = new Item();
-        item.title = title;
-        item.price = price;
-        item.quantity = quantity;
-        item.type = type;
+        Item item = new Item(title, price, quantity, type);
         items.add(item);
-    }
-
-    /**
-     * Formats shopping price.
-     */
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        if (items.size() == 0)
-            return "No items.";
-        double total = 0.00;
-        sb.append(" # Item Price Quan. Discount Total\n");
-        sb.append("---------------------------------------------------------\n");
-        for (int i = 0; i < items.size(); i++) {
-            Item item = (Item) items.get(i);
-            int discount = calculateDiscount(item);
-            double itemTotal = item.price * item.quantity * (100.00 - discount) /
-                    100.00;
-            appendPaddedRight(sb, String.valueOf(i + 1), 2);
-            sb.append(" ");
-            appendPaddedLeft(sb, item.title, 20);
-            sb.append(" ");
-            appendPaddedRight(sb, MONEY.format(item.price), 7);
-            sb.append(" ");
-            appendPaddedRight(sb, String.valueOf(item.quantity), 4);
-            sb.append(" ");
-            if (discount == 0)
-                sb.append(" -");
-            else {
-                appendPaddedRight(sb, String.valueOf(discount), 7);
-                sb.append("%");
-            }
-            sb.append(" ");
-            appendPaddedRight(sb, MONEY.format(itemTotal), 10);
-            sb.append("\n");
-            total += itemTotal;
-        }
-        sb.append("---------------------------------------------------------\n");
-        appendPaddedRight(sb, String.valueOf(items.size()), 2);
-        sb.append(" ");
-        appendPaddedRight(sb, MONEY.format(total), 10);
-        return sb.toString();
-    }
-
-    // --- private section --------------------------------------------------
-    private static final NumberFormat MONEY;
-
-    static {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        MONEY = new DecimalFormat("$#.00", symbols);
-    }
-
-    /**
-     * Adds to string buffer given string, padded with spaces.
-     *
-     * @return " str".length() == width
-     */
-    private static void appendPaddedRight(StringBuffer sb, String str,
-                                          int width) {
-        for (int i = str.length(); i < width; i++)
-            sb.append(" ");
-        sb.append(str);
-    }
-
-    /**
-     * Adds string to buffer, wills spaces to width.
-     * If string is longer than width it is trimmed and ends with '...'
-     */
-    private static void appendPaddedLeft(StringBuffer sb, String str,
-                                         int width) {
-        if (str.length() > width) {
-            sb.append(str.substring(0, width - 3));
-            sb.append("...");
-        } else {
-            sb.append(str);
-            for (int i = str.length(); i < width; i++)
-                sb.append(" ");
-        }
     }
 
     /**
@@ -157,22 +47,22 @@ public class ShoppingCart {
      * For each full 100 items item gets additional 10%, but not more
      * than 80% total
      */
-    private static int calculateDiscount(Item item) {
+    public static int calculateDiscount(Item item) {
         int discount = 0;
-        switch (item.type) {
-            case ITEM_SECOND_FREE:
-                if (item.quantity > 1)
+        switch (item.getType()) {
+            case Item.ITEM_SECOND_FREE:
+                if (item.getQuantity() > 1)
                     discount = 50;
                 break;
-            case ITEM_DISCOUNT:
-                discount = 10 + item.quantity / 10 * 10;
+            case Item.ITEM_DISCOUNT:
+                discount = 10 + item.getQuantity() / 10 * 10;
                 if (discount > 50)
                     discount = 50;
                 break;
-            case ITEM_FOR_SALE:
+            case Item.ITEM_FOR_SALE:
                 discount = 90;
         }
-        discount += item.quantity / 100 * 10;
+        discount += item.getQuantity() / 100 * 10;
         if (discount > 80)
             discount = 80;
         return discount;
